@@ -4,8 +4,15 @@ const midtransClient = require("midtrans-client");
 
 const app = express();
 
-// Konfigurasi Middleware
-app.use(cors()); // Cukup dipanggil sekali saja di sini
+// Konfigurasi CORS penuh
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
 app.use(express.json());
 
 // 1. Inisialisasi Midtrans Snap SDK
