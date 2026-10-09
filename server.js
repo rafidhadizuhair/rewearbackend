@@ -4,17 +4,26 @@ const midtransClient = require("midtrans-client");
 
 const app = express();
 
-// Konfigurasi CORS penuh
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
+// 1. Handling CORS secara Manual & Middleware CORS
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  );
 
+  // Jika browser mengirim HTTP OPTIONS (preflight), langsung jawab dengan HTTP 200 OK
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+app.use(cors());
 app.use(express.json());
 
+// Rest of your server.js logic (Midtrans init, routes, etc.)...
 // 1. Inisialisasi Midtrans Snap SDK
 // Mendukung pembacaan Server Key dari Environment Variable (proses cloud) atau fallback ke key kamu
 const snap = new midtransClient.Snap({
