@@ -4,8 +4,8 @@ const midtransClient = require("midtrans-client");
 
 const app = express();
 
-// Konfigurasi CORS agar frontend GitHub Pages atau domain lain bisa mengakses API
-app.use(cors());
+// Konfigurasi Middleware
+app.use(cors()); // Cukup dipanggil sekali saja di sini
 app.use(express.json());
 
 // 1. Inisialisasi Midtrans Snap SDK
